@@ -107,16 +107,31 @@ def test_sigmoid(a: float) -> None:
     * It crosses 0 at 0.5
     * It is  strictly increasing.
     """
-    # TODO: Implement for Task 0.2.
-    raise NotImplementedError('Need to implement for Task 0.2')
-
+    sig = sigmoid(a)
+    assert 0 <= sig <= 1
+    assert_close(1 - sig, sigmoid(-a))
+    assert_close(sigmoid(0), 0.5)
+    assert sig <= sigmoid(a + 1e-2)
 
 @pytest.mark.task0_2
 @given(small_floats, small_floats, small_floats)
 def test_transitive(a: float, b: float, c: float) -> None:
     "Test the transitive property of less-than (a < b and b < c implies a < c)"
-    # TODO: Implement for Task 0.2.
-    raise NotImplementedError('Need to implement for Task 0.2')
+    res = lt(a, b)
+    if res == 1:  # a < b
+        res = lt(b, c)
+        if res == 1:  # b < c
+            assert lt(a, c) == 1
+        else:  # c <= b
+            assert lt(a, b) == 1
+    else:  # b <= a
+        res = lt(a, c)
+        if res == 1:  # a < c
+            assert lt(b, c) == 1
+        else:  # c <= a
+            if a != b:
+                assert lt(b, a) == 1
+
 
 
 @pytest.mark.task0_2
@@ -125,8 +140,9 @@ def test_symmetric() -> None:
     Write a test that ensures that :func:`minitorch.operators.mul` is symmetric, i.e.
     gives the same value regardless of the order of its input.
     """
-    # TODO: Implement for Task 0.2.
-    raise NotImplementedError('Need to implement for Task 0.2')
+    assert_close(mul(1337, -228), mul(-228, 1337))
+    assert_close(mul(1480, 322.228), mul(322.228, 1480))
+    assert_close(mul(-228, -123456), mul(-123456, -228))
 
 
 @pytest.mark.task0_2
@@ -135,17 +151,22 @@ def test_distribute() -> None:
     Write a test that ensures that your operators distribute, i.e.
     :math:`z \times (x + y) = z \times x + z \times y`
     """
-    # TODO: Implement for Task 0.2.
-    raise NotImplementedError('Need to implement for Task 0.2')
+    z = 228.228
+    x = 1337
+    y = 148.322
+    assert_close(mul(z, add(x, y)), add(mul(z, x), mul(z, y)))
 
 
+# проверка на ассоциативность сложения
 @pytest.mark.task0_2
 def test_other() -> None:
     """
     Write a test that ensures some other property holds for your functions.
     """
-    # TODO: Implement for Task 0.2.
-    raise NotImplementedError('Need to implement for Task 0.2')
+    z = 228.228
+    x = 1337
+    y = 148.322
+    assert_close(add(z, add(x, y)), add(add(z, x), y))
 
 
 # ## Task 0.3  - Higher-order functions
@@ -173,8 +194,8 @@ def test_sum_distribute(ls1: List[float], ls2: List[float]) -> None:
     Write a test that ensures that the sum of `ls1` plus the sum of `ls2`
     is the same as the sum of each element of `ls1` plus each element of `ls2`.
     """
-    # TODO: Implement for Task 0.3.
-    raise NotImplementedError('Need to implement for Task 0.3')
+    print(sum(ls1), sum(ls2), addLists(ls1, ls2))
+    assert_close(sum(ls1) + sum(ls2), sum(addLists(ls1, ls2)))
 
 
 @pytest.mark.task0_3
