@@ -135,37 +135,32 @@ def test_transitive(a: float, b: float, c: float) -> None:
 
 
 @pytest.mark.task0_2
-def test_symmetric() -> None:
+@given(small_floats, small_floats)
+def test_symmetric(a: float, b: float) -> None:
     """
     Write a test that ensures that :func:`minitorch.operators.mul` is symmetric, i.e.
     gives the same value regardless of the order of its input.
     """
-    assert_close(mul(1337, -228), mul(-228, 1337))
-    assert_close(mul(1480, 322.228), mul(322.228, 1480))
-    assert_close(mul(-228, -123456), mul(-123456, -228))
+    assert_close(mul(a, b), mul(a, b))
 
 
 @pytest.mark.task0_2
-def test_distribute() -> None:
+@given(small_floats, small_floats, small_floats)
+def test_distribute(z: float, x: float, y: float) -> None:
     r"""
     Write a test that ensures that your operators distribute, i.e.
     :math:`z \times (x + y) = z \times x + z \times y`
     """
-    z = 228.228
-    x = 1337
-    y = 148.322
     assert_close(mul(z, add(x, y)), add(mul(z, x), mul(z, y)))
 
 
 # проверка на ассоциативность сложения
 @pytest.mark.task0_2
-def test_other() -> None:
+@given(small_floats, small_floats, small_floats)
+def test_other(z: float, x: float, y: float) -> None:
     """
     Write a test that ensures some other property holds for your functions.
     """
-    z = 228.228
-    x = 1337
-    y = 148.322
     assert_close(add(z, add(x, y)), add(add(z, x), y))
 
 
