@@ -56,7 +56,7 @@ class ScalarFunction:
                 raw_vals.append(v.data)
             else:
                 scalars.append(minitorch.scalar.Scalar(v))
-                raw_vals.append(v)
+                raw_vals.append(float(v))
 
         # Create the context.
         ctx = Context(False)
@@ -167,7 +167,7 @@ class ReLU(ScalarFunction):
     @staticmethod
     def forward(ctx: Context, a: float) -> float:
         ctx.save_for_backward(a)
-        return float(relu(a))
+        return relu(a)
 
     @staticmethod
     def backward(ctx: Context, d_output: float) -> float:
