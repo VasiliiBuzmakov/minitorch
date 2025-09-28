@@ -172,10 +172,8 @@ class Scalar:
         assert h.last_fn is not None
         assert h.ctx is not None
 
-        # Compute the local gradients for each input using the last function's backward method.
         local_derivatives = h.last_fn._backward(h.ctx, d_output)
 
-        # Multiply the local gradients with the output derivative (d_output) and pair with inputs
         return [
             (input_var, local_deriv)
             for input_var, local_deriv in zip(h.inputs, local_derivatives)
